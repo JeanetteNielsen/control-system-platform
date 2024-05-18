@@ -20,7 +20,7 @@ namespace ControlSystemPlatform.Server.Test
 
 
         [Theory, AutoFakeData]
-        public async Task GivenATransportOrder_WhenCallingPost_ThenTransportOrderIsPersistet(List<Item> items,
+        public async Task GivenATransportOrder_WhenCallingPost_ThenTransportOrderIsPersisted(List<Item> items,
             CreateTransportOrderCommand.CreateRequest request)
         {
             // Arrange
@@ -43,7 +43,7 @@ namespace ControlSystemPlatform.Server.Test
 
 
         [Theory, AutoFakeData]
-        public async Task GivenATransportOrderWithInvalidItemSku_WhenCallingPost_ThenBadRequestIs(
+        public async Task GivenATransportOrderWithInvalidItemSku_WhenCallingPost_ThenBadRequestIsReturned(
             CreateTransportOrderCommand.CreateRequest request)
         {
             // Arrange

@@ -9,7 +9,7 @@ namespace ControlSystemPlatform.Server.Controllers
     public class TransportOrderController(IMediator mediator) : ControllerBase
     {
         [HttpPost]
-        public async Task<ActionResult> Get(CreateTransportOrderCommand.CreateRequest request,
+        public async Task<ActionResult> Post(CreateTransportOrderCommand.CreateRequest request,
             CancellationToken cancellationToken)
         {
             // TODO: Add mediatr logging and validation patterns to ensure the incoming data is valid
