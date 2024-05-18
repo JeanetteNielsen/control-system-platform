@@ -44,7 +44,6 @@ public class Item
     public Guid Id { get; set; }
     [MaxLength(50)] public string SKU { get; set; }
     [MaxLength(265)] public string Description { get; set; }
-    public int Quantity { get; set; }
     public decimal Weight { get; set; }
     public Dimensions Dimensions { get; set; }
     [MaxLength(265)] public string SpecialHandlingInstructions { get; set; }
