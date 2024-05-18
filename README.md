@@ -1,2 +1,2 @@
 # ControlSystemPlatform
-Sandbox project for trying implementations of out Smart Warehouse problems.
+Sandbox project for playing around with some Smart Warehouse problems.
