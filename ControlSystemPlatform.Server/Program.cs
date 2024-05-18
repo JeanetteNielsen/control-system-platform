@@ -7,7 +7,6 @@ Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
 
-
 try
 {
     Log.Information("Starting Template app web api");
