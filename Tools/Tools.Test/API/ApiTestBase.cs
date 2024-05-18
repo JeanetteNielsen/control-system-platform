@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using TemplateApp.Server.Infrastructure;
+using ControlSystemPlatform.Server.Infrastructure;
 
 namespace Tools.Test.API;
 

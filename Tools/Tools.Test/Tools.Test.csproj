@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\TemplateApp.Server\TemplateApp.Server.csproj" />
+    <ProjectReference Include="..\..\ControlSystemPlatform.Server\ControlSystemPlatform.Server.csproj" />
   </ItemGroup>
 
 </Project>
