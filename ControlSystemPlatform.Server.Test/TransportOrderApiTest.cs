@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Net;
+using FluentAssertions;
 using ControlSystemPlatform.DAL;
 using Tools.Test.API;
 using Tools.Test.AutoData;
@@ -38,6 +39,37 @@ namespace ControlSystemPlatform.Server.Test
             resultFromDb.Should().NotBeNull();
 
             //TODO: assert properties and states
+        }
+
+
+        [Theory, AutoFakeData]
+        public async Task GivenATransportOrderWithInvalidItemSku_WhenCallingPost_ThenBadRequestIs(
+            CreateTransportOrderCommand.CreateRequest request)
+        {
+            // Arrange
+
+            // Act
+            var result = await PostAsync("", request);
+
+            // Assert
+            result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Theory, AutoFakeData]
+        public async Task GivenTheSameTransportOrderTwice_WhenCallingPost_ThenBadRequestIsReturned(List<Item> items,
+            CreateTransportOrderCommand.CreateRequest request)
+        {
+            // Arrange
+            TestDb.WithItems(items);
+            var correctedItems = items.Select((t, i) => request.Items[i] with { SKU = t.SKU }).ToList();
+            request = request with { Items = correctedItems };
+
+            // Act
+            await PostAsync("", request);
+            var result = await PostAsync("", request);
+
+            // Assert
+            result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
 }
