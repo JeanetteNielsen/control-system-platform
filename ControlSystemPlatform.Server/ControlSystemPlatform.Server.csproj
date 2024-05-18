@@ -33,9 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ControlSystemPlatform.BLL\ControlSystemPlatform.BLL.csproj" />
-    <ProjectReference Include="..\ControlSystemPlatform.client\ControlSystemPlatform.client.esproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\ControlSystemPlatform.DAL\ControlSystemPlatform.DAL.csproj" />
     <ProjectReference Include="..\ControlSystemPlatform.Shared\ControlSystemPlatform.Shared.csproj" />
   </ItemGroup>
