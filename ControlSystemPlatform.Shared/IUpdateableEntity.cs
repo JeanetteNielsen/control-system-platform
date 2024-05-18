@@ -1,4 +1,6 @@
-﻿namespace ControlSystemPlatform.Shared;
+﻿using System.Runtime.InteropServices.JavaScript;
+
+namespace ControlSystemPlatform.Shared;
 
 public interface IUpdateableEntity
 {

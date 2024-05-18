@@ -1,6 +1,6 @@
 @ControlSystemPlatform.Server_HostAddress = http://localhost:5299
 
-GET {{ControlSystemPlatform.Server_HostAddress}}/weatherforecast/
+GET {{ControlSystemPlatform.Server_HostAddress}}/transportorder/
 Accept: application/json
 
 ###

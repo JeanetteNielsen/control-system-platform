@@ -1,11 +1,13 @@
 ﻿using System.Text.Json.Serialization;
+using ControlSystemPlatform.BLL.TransportOrderDomain.Handlers;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using ControlSystemPlatform.BLL.WeatherForcasts.Handlers;
 using ControlSystemPlatform.DAL;
 using ControlSystemPlatform.DAL.Query;
 using ControlSystemPlatform.Server.ScopedContext;
 using ControlSystemPlatform.Shared;
+using ControlSystemPlatform.BLL.TransportOrderDomain;
+using ControlSystemPlatform.DAL.Command;
 
 namespace ControlSystemPlatform.Server.Infrastructure
 {
@@ -23,20 +25,23 @@ namespace ControlSystemPlatform.Server.Infrastructure
 
             services.AddScoped<IScopedContext, ScopedContextMock>();
 
-            services.AddTransient<IGetWeatherForcasts, GetWeatherForcasts>();
+            services.AddTransient<ITransportOrderPublisher, TransportOrderPublisher>();
+            services.AddTransient<IAddNewTransportOrderCommand, AddNewTransportOrderCommand>();
+            services.AddTransient<IGetOrderItemIdsQuery, GetOrderItemIdsQuery>();
+            services.AddTransient<IGetTransportOrderOrDefault, GetTransportOrderOrDefault>();
 
             // Since the app is so small, there is no ref to BLL yet.
             // The following lines assures the assembly is loaded before the mediator is registered to allow for the handler to me registered.
-            var t = typeof(GetWeatherForcastsRequestHandler);
+            var t = typeof(CreateTransportOrderCommandHandler);
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-            SetupWeatherDb(services);
+            SetupWarehouseDb(services);
         }
 
-        protected virtual void SetupWeatherDb(IServiceCollection services)
+        protected virtual void SetupWarehouseDb(IServiceCollection services)
         {
-            services.AddDbContext<WeatherDbContext>(
-                options => options.UseSqlServer("name=ConnectionStrings:WeatherDb"));
+            services.AddDbContext<WarehouseDbContext>(
+                options => options.UseSqlServer("name=ConnectionStrings:WarehouseDb"));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -61,18 +66,18 @@ namespace ControlSystemPlatform.Server.Infrastructure
 
         public virtual void SeedData(IServiceProvider services)
         {
-            var context = services.GetService<WeatherDbContext>();
-            WeatherDataSeed.Migrate(context);
-            WeatherDataSeed.SeedRandomData(context);
+            var context = services.GetService<WarehouseDbContext>();
+            WarehouseDbSeed.Migrate(context);
+            WarehouseDbSeed.Seed(context);
         }
     }
 
     // TODO: Teststartup.cs will nok work if moved to test project. Investigate how this can be corrected, since it does not belong here.
     public class TestStartup(IConfiguration configuration) : Startup(configuration)
     {
-        protected override void SetupWeatherDb(IServiceCollection services)
+        protected override void SetupWarehouseDb(IServiceCollection services)
         {
-            services.AddDbContext<WeatherDbContext>(options =>
+            services.AddDbContext<WarehouseDbContext>(options =>
                 options.UseInMemoryDatabase("TestingDB"));
         }
     }

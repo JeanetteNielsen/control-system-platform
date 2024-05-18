@@ -1,27 +1,55 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ControlSystemPlatform.DAL.Enities;
+using Microsoft.EntityFrameworkCore;
 using ControlSystemPlatform.Shared;
 
 namespace ControlSystemPlatform.DAL
 {
-    public class WeatherDbContext(DbContextOptions<WeatherDbContext> options, IScopedContext scopedContext)
+    public class WarehouseDbContext(DbContextOptions<WarehouseDbContext> options, IScopedContext scopedContext)
         : DbContext(options)
     {
-        public DbSet<WeatherForecastEntity> WeatherForecast { get; set; }
+        public DbSet<TransportOrderEntity> TransportOrder { get; set; }
+        public DbSet<Item> Items { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<WeatherForecastEntity>()
-                .Property(b => b.TemperatureCelsius).HasPrecision(5, 2);
+            modelBuilder.Entity<Item>()
+                .Property(b => b.Weight).HasPrecision(8, 3);
+
+
+            modelBuilder.Entity<TransportOrderEntity>()
+                .HasIndex(item => item.RequesterOrderReference)
+                .IsUnique();
 
             modelBuilder
-                .Entity<WeatherForecastEntity>()
-                .Property(d => d.Probability)
+                .Entity<TransportOrderEntity>()
+                .Property(d => d.Priority)
+                .HasConversion<string>();
+
+            modelBuilder
+                .Entity<TransportOrderEntity>()
+                .Property(d => d.Status)
+                .HasConversion<string>();
+
+            modelBuilder
+                .Entity<TransportOrderEntity>()
+                .Property(d => d.HandlingStatus)
                 .HasConversion<string>();
 
 
-            modelBuilder.Entity<WeatherForecastEntity>()
+            modelBuilder.Entity<TransportOrderEntity>()
                 .Property(b => b.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()");
+
+
+            modelBuilder.Entity<Item>(entity =>
+            {
+                entity.OwnsOne(e => e.Dimensions, dimensions =>
+                {
+                    dimensions.Property(d => d.Height).HasColumnName("Height").HasPrecision(8, 2);
+                    dimensions.Property(d => d.Length).HasColumnName("Length").HasPrecision(8, 2);
+                    dimensions.Property(d => d.Width).HasColumnName("Width").HasPrecision(8, 2);
+                });
+            });
         }
 
 
@@ -50,6 +78,9 @@ namespace ControlSystemPlatform.DAL
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
+        /// <summary>
+        /// TODO: We need a more detailed audit approach for this complexity
+        /// </summary>
         private void UpdateAuditFields()
         {
             var entries = ChangeTracker
