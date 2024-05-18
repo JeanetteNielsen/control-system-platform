@@ -14,4 +14,8 @@
     <ProjectReference Include="..\ControlSystemPlatform.DAL\ControlSystemPlatform.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TransportOrderDomain\Mappers\" />
+  </ItemGroup>
+
 </Project>

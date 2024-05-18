@@ -22,9 +22,4 @@
 	  <ProjectReference Include="..\ControlSystemPlatform.Shared\ControlSystemPlatform.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Migrations\" />
-	  <Folder Include="Command\" />
-	</ItemGroup>
-
 </Project>
